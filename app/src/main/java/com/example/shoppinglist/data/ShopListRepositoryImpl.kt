@@ -6,11 +6,11 @@ import com.example.shoppinglist.domain.ShopItem
 import com.example.shoppinglist.domain.ShopListRepository
 
 object ShopListRepositoryImpl:ShopListRepository {
-    private val shopList = mutableListOf<ShopItem>()
+    private val shopListLD = MutableLiveData<List<ShopItem>>()
 
+    private val shopList = sortedSetOf<ShopItem>({o1,o2 -> o1.id.compareTo(o2.id)})
     private var autoIncrement = 0
 
-    private val shopListLD = MutableLiveData<List<ShopItem>>()
 
     override fun addShopItem(shopItem: ShopItem) {
         if(shopItem.id == ShopItem.UNDEFINED_ID){
