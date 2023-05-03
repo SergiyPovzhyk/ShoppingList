@@ -29,10 +29,7 @@ class ShopItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-
         launchRightMode()
-
-        observeViewModel()
     }
 
     private fun observeViewModel() {
@@ -70,6 +67,7 @@ class ShopItemActivity : AppCompatActivity() {
 
 
     private fun parseIntent() {
+
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             throw RuntimeException("Param screen mode is absent")
         }

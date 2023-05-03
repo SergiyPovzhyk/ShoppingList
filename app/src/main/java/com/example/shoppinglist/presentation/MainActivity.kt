@@ -84,6 +84,4 @@ class MainActivity : AppCompatActivity() {
             viewModel.changeEnabledState(it)
         }
     }
-
-
 }
