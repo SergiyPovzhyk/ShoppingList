@@ -2,6 +2,7 @@ package com.example.shoppinglist.presentation
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainer
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),ShopItemFragment.OnEditingFinishedListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ShopListAdapter
     private var shopItemContainer: FragmentContainerView? = null
@@ -29,24 +30,23 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
         buttonAddItem.setOnClickListener {
-            if(isOnePaneMode()){
+            if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentAdd(this)
                 startActivity(intent)
-            }
-            else{
+            } else {
                 launchFragment(ShopItemFragment.newInstanceAddItem())
             }
         }
     }
 
-    private fun isOnePaneMode():Boolean{
+    private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
 
-    private fun launchFragment(fragment: Fragment){
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container,fragment)
+            .replace(R.id.shop_item_container, fragment)
             .addToBackStack(null)
             .commit()
     }
@@ -93,11 +93,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         adapter.onShopItemClickListener = {
-            if(isOnePaneMode()){
+            if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentEdit(this, it.id)
                 startActivity(intent)
-            }
-            else{
+            } else {
                 launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
             }
 
@@ -108,5 +107,10 @@ class MainActivity : AppCompatActivity() {
         adapter.onShopItemLongClickListener = {
             viewModel.changeEnabledState(it)
         }
+    }
+
+    override fun onEditingFinished() {
+        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
     }
 }
