@@ -29,28 +29,10 @@ class ShopItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-        launchRightMode()
-    }
-
-    private fun observeViewModel() {
-        viewModel.errorInputCount.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_count)
-            } else null
-            tilCount.error = message
+        if(savedInstanceState == null){
+            launchRightMode()
         }
 
-        viewModel.errorInputName.observe(this) {
-            val message = if (it) {
-                getString(R.string.error_input_name)
-            } else {
-                null
-            }
-            tilName.error = message
-        }
-        viewModel.shouldCloseScreen.observe(this) {
-            finish()
-        }
     }
 
     private fun launchRightMode() {
@@ -61,7 +43,7 @@ class ShopItemActivity : AppCompatActivity() {
         }
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container,fragment)
+            .replace(R.id.shop_item_container,fragment)
             .commit()
     }
 
